@@ -1,5 +1,5 @@
 # Data analyst portfolio
-I'm a data analyst woth over 10 years' experience, available immediately and seeking remote or remote-first work. Insight-driven analysis, designing and building pipelines and models, advanced data visualisations and reporting. Able to translate complex briefs into measurable outcomes and quickly develop prototypes as well as full implementations.
+I'm a data analyst with over 10 years' experience, available immediately and seeking remote or remote-first work. Insight-driven analysis, designing and building pipelines and models, advanced data visualisations and reporting. Able to translate complex briefs into measurable outcomes and quickly develop prototypes as well as full implementations.
 
 ## What I do
 - Insight-driven analysis 
