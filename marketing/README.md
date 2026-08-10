@@ -1,9 +1,9 @@
-![](data-portfolio/images/banner.png)
+![](../images/banner.png)
 
 # Marketing analysis and predictive modelling
 
 ## Key business goals
-_(from original [Data Analyst Case](data-portfolio/marketing/data/dictionaries/iFood Data Analyst Case.pdf))_
+_(from original [Data Analyst Case](data/dictionaries/iFood Data Analyst Case.pdf))_
 
 1. **Explore the data**  to provide the marketing team a better understanding of the characteristic features of respondents
 2. **Create a predictive model** which allows the company to **maximise the profit** of the next marketing campaign
@@ -11,7 +11,7 @@ _(from original [Data Analyst Case](data-portfolio/marketing/data/dictionaries/i
 
 **Strategic note:** While the business request for the predictive model is to optimise for **maximum net profit**, this project goes beyond a finding a single "optimal" threshold. Recognising that real-world campaigns are constrained by **budget**, **risk appetite**, and the need for **customer goodwill**, a comprehensive **trade-off analysis** is provided. This includes visualisations and tables allowing stakeholders to choose the best strategy, balancing profit, ROI and long-term brand health based on their specific constraints.
 
-![image](data-portfolio/marketing/images/Annotated_marketing_impact.png)
+![image](images/Annotated_marketing_impact.png)
 
 ---
 
