@@ -1,7 +1,7 @@
-![](data-portfolio/images/banner.png)
+![](images/banner.png)
 
 ## Data portfolio (in progress)
-- **marketing:** marketing project: cleaning and EDA, response prediction and SHAP analysis (segmentation to come)
+- **marketing:** marketing project [(view project)](marketing): data cleaning and EDA, response prediction and SHAP analysis (segmentation to come)
 - **rag:** (to come) RAG pipeline demo
 
 
@@ -22,7 +22,7 @@ This portfolio is a work in progress, showcasing a range of technical skills.
 
 ### 1. Marketing analytics and modelling 
 
-- **Link:** [View project]()
+- **Link:** [View project](marketing)
 - **Focus:** Predicting customer offer acceptance to maximise net profit
 - **Approach:** End-to-end pipeline including data cleaning, exploratory data analysis (EDA), and predictive modelling
 - **Tech stack:** Python, pandas, RandomForests, XGBoost, SHAP, seaborn, Matplotlib, Databricks.
