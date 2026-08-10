@@ -42,7 +42,7 @@ The `marketing_cleaning.ipynb` notebook details the full data pipeline:
 
 ## Key Results and insights
 
-###Exploratory data analysis (EDA)
+### Exploratory data analysis (EDA)
 - **Conversion rate:** ~15% of customers accepted the most recent offer
 - **Top predictors:** **Recency** and **previous offer acceptance history** are the strongest signals for future acceptance
 - **Demographics:** Respondents tend to have higher income, smaller households, and are long-standing customers with recent purchases
@@ -50,7 +50,7 @@ The `marketing_cleaning.ipynb` notebook details the full data pipeline:
   - **Overall:** Store (46%) > Web (33%) > Catalog (21%)
   - **Respondents:** Show a higher propensity for **Catalog** purchases and fewer Store visits, suggesting they prefer browsing from home
   - **Web insight:** Positive responders often have *fewer* web visits but *higher* conversion per visit, indicating **intent-driven shopping** vs. speculative browsing. Overall, a *higher* number of web visits is correlated with lower Income, higher 'deals' purchases and more children/teens at home, likely to be visiting frequently to compare prices and hunt for deals.  These customers are are highly price-sensitive.
-###Predictive model performance
+### Predictive model performance
 - **Algorithm:** XGBoost Classifier (selected over Random Forests for higher precision on the minority class).
 - **Optimisation goal:** **Maximise net profit** (*revenue per conversion* minus *cost per offer*), not just accuracy
 - **Performance on test set (397 customers):**
@@ -73,7 +73,7 @@ The current model relies heavily on behavioural features (eg `NumAccepted`, `Day
 - Build a separate model for **new customers** using only static features (eg demographics, onboarding data)
 - Explore transfer learning or feature engineering to bridge the gap between new and existing customers
 
-###Customer segmentation insights
+### Customer segmentation insights
 *(Pending final segmentation notebook, but based on EDA and SHAP:)*
 
 - **The "Loyal Browsers":** High `TotalSpend`, high `NumAccepted`, low `Recency`. **Action:** Target with exclusive catalog offers
@@ -112,12 +112,16 @@ Regardless of the model's prediction, implement **cross-channel frequency cappin
 
 ## How to Run
 **Clone the repository:**
+
+`git clone https://github.com/datagranate/data-portfolio.git`
    
 **Install dependencies:**
  
- ```pip install -r requirements.txt```
+ `pip install -r requirements.txt`
  
 **Run the notebooks:**
+
+`cd marketing`
  
 Start with `marketing_cleaning.ipynb` to reproduce the data pipeline.
 
