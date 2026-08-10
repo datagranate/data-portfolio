@@ -3,7 +3,7 @@
 # Marketing analysis and predictive modelling
 
 ## Key business goals
-_(from original [Data Analyst Case](data/dictionaries/iFood Data Analyst Case.pdf))_
+_(from original [Data Analyst Case](https://github.com/datagranate/data-portfolio/blob/main/marketing/data/dictionaries/iFood%20Data%20Analyst%20Case.pdf))_
 
 1. **Explore the data**  to provide the marketing team a better understanding of the characteristic features of respondents
 2. **Create a predictive model** which allows the company to **maximise the profit** of the next marketing campaign
