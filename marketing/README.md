@@ -2,6 +2,25 @@
 
 # Marketing analysis and predictive modelling
 
+## Table of contents
+- [Project overview](#-project-overview)
+- [Key business goals](#-key-business-goals)
+- [Dataset](#-dataset)
+- [Notebooks](#-notebooks)
+- [Key results and insights](#-key-results-and-insights)
+- [Exploratory data analysis (EDA)](#exploratory-data-analysis-eda)
+- [Predictive model performance](#predictive-model-performance)
+- [Initial customer segmentation insights](#initial-customer-segmentation-insights)
+- [RFM methodology and limitations](#rfm-methodology-and-limitations)
+- [Strategic recommendations for Marketing team](#strategic-recommendations-for-marketing-team)
+- [How to run](#how-to-run)
+
+---
+## Project overview
+This project demonstrates end-to-end marketing analytics, from raw data cleaning to RFM customer segmentation and profit optimisation via machine learning.
+
+[**View Tableau interactive RFM dashboard**](https://public.tableau.com/app/profile/data.granate/viz/MarketingRFMdashboard/Dashboard12)
+
 ## Key business goals
 _(from original [Data Analyst Case](https://github.com/datagranate/data-portfolio/blob/main/marketing/data/dictionaries/iFood%20Data%20Analyst%20Case.pdf))_
 
@@ -35,12 +54,19 @@ The `marketing_cleaning.ipynb` notebook details the full data pipeline:
 | Notebook | Focus | Key output |
 | :--- | :--- | :--- |
 | `marketing_cleaning.ipynb` | Data cleaning and EDA | Data quality, initial insights, feature engineering |
-| `marketing_ml.ipynb` | Predictive modelling | XGBoost model optimised for **net profit** (not just accuracy) |
-| `marketing_segmentation.ipynb` | Customer profiling | **(to come)** Segment definitions and targetable personas  |
+| `marketing_ml.ipynb` | Predictive modelling | Evauating RandomForests and XGBoost models optimised for **net profit** (not just standard metrics) |
+| `marketing_rfm.ipynb` | RFM segments | Segment definitions and targetable personas  |
+| `marketing_segmentation.ipynb` | Advanced segmentation | **(planned)** Unsupervised learning techniques (eg K-means) to complement the RFM analysis and identify latent customer clusters  |
+
+### Supporting scripts and utilities
+| File | Type | Purpose | Key output and notes |
+| :--- | :--- | :--- | :--- |
+| `generate_synthetic_transactions.py` | Script | Data simulation | Generates realistic transaction patterns matching historical aggregates. *Reproducible:* Fixed seed logic.
+| `chart_utils.py` | Module | Visualisation helpers | Bespoke colour palette and pre-styled charting functions for EDA reporting. Ensures visual consistency across all notebooks and dashboards.
 
 ---
 
-## Key Results and insights
+## Key results and insights
 
 ### Exploratory data analysis (EDA)
 - **Conversion rate:** ~15% of customers accepted the most recent offer
@@ -73,12 +99,45 @@ The current model relies heavily on behavioural features (eg `NumAccepted`, `Day
 - Build a separate model for **new customers** using only static features (eg demographics, onboarding data)
 - Explore transfer learning or feature engineering to bridge the gap between new and existing customers
 
-### Customer segmentation insights
+### Initial customer segmentation insights
 *(Pending final segmentation notebook, but based on EDA and SHAP:)*
 
 - **The "Loyal Browsers":** High `TotalSpend`, high `NumAccepted`, low `Recency`. **Action:** Target with exclusive catalog offers
 - **The "Window Shoppers":** High `NumWebVisits`, low `NumWebPurchases`, high `Recency`. **Action:** Target with time-sensitive web-only discounts
 - **The "High-Risk, High-Reward":** High `Income`, high `PercentGold`, but low `NumAccepted`. **Action:** Test premium offers to convert them
+
+---
+## RFM methodology and limitations
+
+This project uses a simplified RFM (Recency, Frequency, Monetary) scoring approach tailored to the constraints of the provided dataset.
+
+### Data constraints
+- **Original dataset is aggregated:** Each row represents a single customer with spend and purchase counts summed over the last two years. No transaction-level granularity is available, preventing custom lookback windows.
+- **Recency cap:** The maximum Recency value is 99 days, indicating the most dormant customer in this dataset last purchased just over 3 months ago. In a live environment, Recency would continuously increase for inactive users, requiring a dynamic scoring window.
+- **New joiners cap:** The most recent customer joined 98 days before to the 'current date', so the *aggregated* transaction data lacks growth from new customers and shows a **marked drop-off after the cut-off date**. This drop-off is not observed in high-scoring RFM segments.
+
+### Scoring approach
+Given the even distribution of Recency values in this dataset (see `marketing_cleaning.ipynb`), a **simple percentile-based scoring** method was applied:
+
+- **Recency:** Scored into 3 equal percentiles.
+- **Frequency and Monetary:** Scored into 5 equal percentiles.
+
+*Note: In a production environment with transaction-level data, I would implement a time-decay model or a custom lookback window to better capture customer lifecycle dynamics.*
+
+### Synthetic transactions
+The `generate_synthetic_transactions.py` script creates a semirealistic transaction stream based on the aggregated `marketing_clean.csv` dataset,  matching the aggregated distributions of the original dataset while creating plausible individual records.
+
+- **Reference date:** Derived from the original cleaning process
+- **Time horizon:** Simulates transactions over a two-year window 
+- **Time patterns:** Uses an 60-day "early burst" window in which 20% of a customer's transactions occur
+- **Spending patterns:** Uses a log-normal distribution (sigma=0.25) to model low-medium spend skew
+
+### Interactive dashboard
+The accompanying [Tableau dashboard](https://public.tableau.com/app/profile/data.granate/viz/MarketingRFMdashboard/Dashboard12) visualises these segments and includes:
+
+- **Top-level KPIs:** Percentage of customers in key segments, revenue, average purchase value per month, customer counts etc
+- **Segment performance:** Breakdowns by RFM segment (eg "Champions", "High value at risk"  etc)
+- **Customer table and transaction chart:** Detailed table and chart for targeted marketing actions
 
 ---
 
@@ -110,7 +169,7 @@ Regardless of the model's prediction, implement **cross-channel frequency cappin
 
 ---
 
-## How to Run
+## How to run
 **Clone the repository:**
 
 `git clone https://github.com/datagranate/data-portfolio.git`
@@ -125,6 +184,9 @@ Regardless of the model's prediction, implement **cross-channel frequency cappin
  
 Start with `marketing_cleaning.ipynb` to reproduce the data pipeline.
 
-Then run `marketing_ml.ipynb` to train the model and generate insights.
+Then run `marketing_ml.ipynb` to train the model, score, and view profit/ROI and SHAP charts.
 
-   
+Run `marketing_rfm.ipynb` to do RFM scoring and create segments.
+
+(Optional) To reproduce the transaction dataset used in the [Tableau dashboard](https://public.tableau.com/app/profile/data.granate/viz/MarketingRFMdashboard/Dashboard12), run
+`python generate_synthetic_transactions.py`.

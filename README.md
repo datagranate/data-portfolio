@@ -1,7 +1,7 @@
 ![](images/banner.png)
 
 ## Data portfolio (in progress)
-- **marketing:** marketing project [(view project)](marketing): data cleaning and EDA, response prediction and SHAP analysis (segmentation to come)
+- **marketing:** marketing project [(view project)](marketing): data cleaning and EDA, response prediction and SHAP analysis, RFM segmentation (advanced segmentation to come). [View Tableau interactive RFM dashboard](https://public.tableau.com/app/profile/data.granate/viz/MarketingRFMdashboard/Dashboard12)
 - **rag:** (to come) RAG pipeline demo
 
 
