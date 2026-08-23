@@ -6,9 +6,11 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
+from langchain_community.vectorstores import FAISS
+
 
 # Configuration
-INDEX_PATH = "chroma_index" 
+INDEX_PATH = "faiss_index" 
 MODEL_NAME = "all-MiniLM-L6-v2"
 # MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 GROQ_MODEL = "groq/compound-mini"
@@ -32,12 +34,12 @@ os.environ["GROQ_API_KEY"] = api_key
 def load_vector_store():
     st.sidebar.markdown("### 🛠️ Loading Index...")
     
-    # 1. Verify files exist
+    # 1. Check if folder exists
     if not os.path.exists(INDEX_PATH):
         st.error(f"❌ Index folder '{INDEX_PATH}' not found!")
         return None
     
-    # 2. Initialize Embeddings (Same as Notebook)
+    # 2. Initialize Embeddings (Must match the one used to create the index)
     try:
         embeddings = HuggingFaceEmbeddings(model_name=MODEL_NAME)
         st.sidebar.success(f"✅ Embeddings loaded: {MODEL_NAME}")
@@ -45,29 +47,40 @@ def load_vector_store():
         st.error(f"❌ Failed to load embeddings: {e}")
         return None
 
-    # 3. Load Chroma
+    # 3. Load FAISS
     try:
-        # IMPORTANT: Ensure embedding_function is passed explicitly
-        vector_store = Chroma(persist_directory=INDEX_PATH, embedding_function=embeddings)
+        # FAISS loads directly from the folder
+        vector_store = FAISS.load_local(
+            INDEX_PATH, 
+            embeddings, 
+            allow_dangerous_deserialization=True # Required for FAISS
+        )
         
-        # 4. DEBUG: Test retrieval immediately
+        # 4. Debug: Check count
+        count = len(vector_store.docstore._dict) # FAISS specific way to count
+        st.sidebar.text(f"Total documents in index: {count}")
+        
+        if count == 0:
+            st.sidebar.error("❌ CRITICAL: Index is empty.")
+            return None
+
+        # 5. Test retrieval
         test_query = "What is the first line of COBS 1?"
         docs = vector_store.similarity_search(test_query, k=1)
         
-        st.sidebar.markdown("---")
         if len(docs) == 0:
             st.sidebar.error("❌ CRITICAL: Test query returned 0 documents!")
-            st.sidebar.warning("This means the index is empty or the model doesn't match.")
-            st.sidebar.text(f"Index path: {INDEX_PATH}")
-            st.sidebar.text(f"Model: {MODEL_NAME}")
+            return None
         else:
             st.sidebar.success(f"✅ Test Query Success! Found {len(docs)} docs.")
-            st.sidebar.text(f"First doc preview: {docs[0].page_content[:50]}...")
+            st.sidebar.text(f"First doc preview: {docs[0].page_content[:100]}...")
             
         return vector_store
         
     except Exception as e:
-        st.error(f"❌ Error loading Chroma: {e}")
+        st.error(f"❌ Error loading FAISS: {e}")
+        import traceback
+        st.text(traceback.format_exc())
         return None
 
 # Call it
