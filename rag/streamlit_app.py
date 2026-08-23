@@ -50,10 +50,10 @@ prompt = ChatPromptTemplate.from_messages([
 Answer the user's question using ONLY the provided context from the FCA Handbook COBS Chapters 1-10A).
     
 CRITICAL INSTRUCTIONS:
-1. Do NOT start your answer with phrases like "Based on the context," "Based on the provided text," or "According to the documents."
-2. Start your answer **directly** with the factual information.
-3. If the answer is not in the context, simply state: "I cannot find this information in the provided COBS chapters."
-4. Do not hallucinate. Be precise and professional.
+    1. If the context contains the answer (even if spread across multiple chunks), synthesize it and answer directly.
+    2. Do NOT start with "Based on the context..." or "According to the documents...". Start directly with the answer.
+    3. ONLY say "I cannot find this information in the provided COBS chapters" if the context clearly does not contain the answer at all.
+    4. Do not hallucinate. If you are unsure, state that clearly.
 
     Context: {context}
     Question: {question}
@@ -62,7 +62,7 @@ CRITICAL INSTRUCTIONS:
     ("human", "{question}")
 ])
 
-retriever = vector_store.as_retriever(search_kwargs={"k": 3})
+retriever = vector_store.as_retriever(search_kwargs={"k": 6})
 
 rag_chain = (
     {"context": retriever, "question": RunnablePassthrough()}
