@@ -1,6 +1,5 @@
 import os
 import streamlit as st
-from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_chroma import Chroma
 from langchain_groq import ChatGroq
 from langchain_huggingface import HuggingFaceEmbeddings
@@ -32,7 +31,7 @@ os.environ["GROQ_API_KEY"] = api_key
 def load_vector_store():
     try:
         embeddings = HuggingFaceEmbeddings(model_name=MODEL_NAME)
-        # This looks for the 'faiss_index' folder 
+        # This looks for the 'chroma_index' folder 
         return Chroma(persist_directory=INDEX_PATH, embedding_function=embeddings)
     except Exception as e:
         st.error(f"Error loading index: {e}")
