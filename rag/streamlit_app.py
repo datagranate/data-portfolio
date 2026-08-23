@@ -1,14 +1,14 @@
 import os
 import streamlit as st
-from langchain_community.vectorstores import FAISS
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_groq import ChatGroq
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
 
 # Configuration
-INDEX_PATH = "faiss_index" 
+INDEX_PATH = "chroma_index" 
 MODEL_NAME = "all-MiniLM-L6-v2"
 GROQ_MODEL = "groq/compound-mini"
 
@@ -32,9 +32,9 @@ def load_vector_store():
     try:
         embeddings = HuggingFaceEmbeddings(model_name=MODEL_NAME)
         # This looks for the 'faiss_index' folder 
-        return FAISS.load_local(INDEX_PATH, embeddings, allow_dangerous_deserialization=True)
-    except FileNotFoundError:
-        st.error("**Index Missing**: The `faiss_index` folder was not found. Please ensure it is uploaded to the repository root alongside this app.")
+        return Chroma(persist_directory=INDEX_PATH, embedding_function=embeddings)
+    except Exception as e:
+        st.error(f"Error loading index: {e}")
         return None
 
 vector_store = load_vector_store()
@@ -47,9 +47,13 @@ llm = ChatGroq(model_name=GROQ_MODEL, temperature=0)
 # RAG chain
 prompt = ChatPromptTemplate.from_messages([
     ("system", """You are a professional UK Financial Compliance Assistant. 
-    Use the following retrieved context from the FCA COBS handbook to answer the question. 
-    If the answer is not in the context, say "I cannot find this information in the provided COBS chapters." 
-    Do not hallucinate. Be precise.
+Answer the user's question using ONLY the provided context from the FCA Handbook COBS Chapters 1-10A).
+    
+CRITICAL INSTRUCTIONS:
+1. Do NOT start your answer with phrases like "Based on the context," "Based on the provided text," or "According to the documents."
+2. Start your answer **directly** with the factual information.
+3. If the answer is not in the context, simply state: "I cannot find this information in the provided COBS chapters."
+4. Do not hallucinate. Be precise and professional.
 
     Context: {context}
     Question: {question}
