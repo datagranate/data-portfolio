@@ -9,8 +9,8 @@ from langchain_core.output_parsers import StrOutputParser
 
 # Configuration
 INDEX_PATH = "chroma_index" 
-# MODEL_NAME = "all-MiniLM-L6-v2"
-MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
+MODEL_NAME = "all-MiniLM-L6-v2"
+# MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 GROQ_MODEL = "groq/compound-mini"
 
 st.set_page_config(page_title="FCA COBS Compliance Assistant", page_icon="🏛️", layout="wide")
@@ -82,18 +82,18 @@ llm = ChatGroq(model_name=GROQ_MODEL, temperature=0)
 # RAG chain
 prompt = ChatPromptTemplate.from_messages([
     ("system", """You are a professional UK Financial Compliance Assistant. 
-Answer the user's question using ONLY the provided context from the FCA Handbook COBS Chapters 1-10A).
+Answer the user's question using ONLY the provided context from the FCA COBS handbook (Chapters 1-10A).
     
 CRITICAL INSTRUCTIONS:
-    1. If the context contains the answer (even if spread across multiple chunks), synthesize it and answer directly.
-    2. Do NOT start with "Based on the context..." or "According to the documents...". Start directly with the answer.
-    3. ONLY say "I cannot find this information in the provided COBS chapters" if the context clearly does not contain the answer at all.
-    4. Do not hallucinate. If you are unsure, state that clearly.
+1. Do NOT start your answer with phrases like "Based on the context," "Based on the provided text," or "According to the documents."
+2. Start your answer **directly** with the factual information.
+3. If the answer is not in the context, simply state: "I cannot find this information in the provided COBS chapters."
+4. Do not hallucinate. Be precise and professional.
 
-    Context: {context}
-    Question: {question}
+Context: {context}
+Question: {question}
 
-    Helpful answer:"""),
+Helpful answer:"""),
     ("human", "{question}")
 ])
 
