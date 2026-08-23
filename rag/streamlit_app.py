@@ -87,6 +87,18 @@ if prompt := st.chat_input("Ask a question about COBS (eg, 'What are the rules o
     with st.chat_message("assistant"):
         with st.spinner("Searching FCA Handbook..."):
             try:
+                # get the raw context to debug
+                context_docs = retriever.invoke(prompt)
+                context_text = "\n\n".join([doc.page_content for doc in context_docs])
+
+                # print to the Streamlit sidebar
+                with st.sidebar:
+                    st.markdown("### Retrieved Context (Debug)")
+                    st.text(context_text[:1000]) # Show first 1000 chars
+                    st.markdown("---")
+                    st.markdown("### Answer")
+
+                ###    
                 response = rag_chain.invoke(prompt)
                 st.markdown(response)
                 st.session_state.messages.append({"role": "assistant", "content": response})
