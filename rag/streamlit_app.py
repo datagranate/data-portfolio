@@ -9,7 +9,8 @@ from langchain_core.output_parsers import StrOutputParser
 
 # Configuration
 INDEX_PATH = "chroma_index" 
-MODEL_NAME = "all-MiniLM-L6-v2"
+# MODEL_NAME = "all-MiniLM-L6-v2"
+MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 GROQ_MODEL = "groq/compound-mini"
 
 st.set_page_config(page_title="FCA COBS Compliance Assistant", page_icon="🏛️", layout="wide")
