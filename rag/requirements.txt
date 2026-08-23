@@ -6,3 +6,4 @@ langchain-huggingface
 faiss-cpu
 PyPDF2
 huggingface_hub
+sentence-transformers
