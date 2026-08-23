@@ -26,21 +26,55 @@ if not api_key:
     st.stop()
 os.environ["GROQ_API_KEY"] = api_key
 
-# Load pre-built vector store
+
 @st.cache_resource
 def load_vector_store():
+    st.sidebar.markdown("### 🛠️ Loading Index...")
+    
+    # 1. Verify files exist
+    if not os.path.exists(INDEX_PATH):
+        st.error(f"❌ Index folder '{INDEX_PATH}' not found!")
+        return None
+    
+    # 2. Initialize Embeddings (Same as Notebook)
     try:
         embeddings = HuggingFaceEmbeddings(model_name=MODEL_NAME)
-        # This looks for the 'chroma_index' folder 
-        return Chroma(persist_directory=INDEX_PATH, embedding_function=embeddings)
+        st.sidebar.success(f"✅ Embeddings loaded: {MODEL_NAME}")
     except Exception as e:
-        st.error(f"Error loading index: {e}")
+        st.error(f"❌ Failed to load embeddings: {e}")
         return None
 
+    # 3. Load Chroma
+    try:
+        # IMPORTANT: Ensure embedding_function is passed explicitly
+        vector_store = Chroma(persist_directory=INDEX_PATH, embedding_function=embeddings)
+        
+        # 4. DEBUG: Test retrieval immediately
+        test_query = "What is the first line of COBS 1?"
+        docs = vector_store.similarity_search(test_query, k=1)
+        
+        st.sidebar.markdown("---")
+        if len(docs) == 0:
+            st.sidebar.error("❌ CRITICAL: Test query returned 0 documents!")
+            st.sidebar.warning("This means the index is empty or the model doesn't match.")
+            st.sidebar.text(f"Index path: {INDEX_PATH}")
+            st.sidebar.text(f"Model: {MODEL_NAME}")
+        else:
+            st.sidebar.success(f"✅ Test Query Success! Found {len(docs)} docs.")
+            st.sidebar.text(f"First doc preview: {docs[0].page_content[:50]}...")
+            
+        return vector_store
+        
+    except Exception as e:
+        st.error(f"❌ Error loading Chroma: {e}")
+        return None
+
+# Call it
 vector_store = load_vector_store()
 
 if vector_store is None:
     st.stop()
+
 
 llm = ChatGroq(model_name=GROQ_MODEL, temperature=0)
 
