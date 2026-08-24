@@ -10,7 +10,7 @@ from langchain_community.vectorstores import FAISS
 
 
 # Configuration
-INDEX_PATH = "faiss_index" 
+INDEX_PATH = "rag/faiss_index" 
 MODEL_NAME = "all-MiniLM-L6-v2"
 # MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 GROQ_MODEL = "groq/compound-mini"
