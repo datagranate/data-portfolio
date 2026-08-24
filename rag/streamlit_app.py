@@ -108,7 +108,8 @@ if prompt := st.chat_input("Ask a question about COBS (eg, 'What are the rules o
                 st.error(f"An error occurred: {e}")
 
 # Sidebar
-st.sidebar.image("images/datagranate_small_100.png")
+st.sidebar.image("images/datagranate_logo.png", use_column_width=True)
+st.sidebar.success(f"[Visit my data portfolio]({GITHUB_REPO_URL})")
 
 st.sidebar.markdown("---")
 
@@ -137,9 +138,5 @@ This tool is for **demonstration and portfolio purposes only**.
 """)
 
 st.sidebar.markdown("---")
-
-# portfolio
-st.sidebar.success("**View the source code**")
-st.sidebar.markdown(f"[Visit my data portfolio]({GITHUB_REPO_URL})")
 st.sidebar.markdown("*Built with LangChain, FAISS, and Streamlit.*")
 
