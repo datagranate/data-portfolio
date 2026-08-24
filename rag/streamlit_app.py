@@ -94,16 +94,6 @@ vector_store = load_vector_store()
 
 if vector_store is None:
     st.stop()
-    
-#check count
-print(f"DEBUG: Checking collection count...")
-collection = vector_store._collection  # Access internal collection
-count = collection.count()
-print(f"DEBUG: Collection count: {count}")
-
-if count == 0:
-    st.sidebar.error("⚠️ CRITICAL: The Chroma collection is EMPTY. You need to re-run the ingestion notebook.")
-
 
 llm = ChatGroq(model_name=GROQ_MODEL, temperature=0)
 
