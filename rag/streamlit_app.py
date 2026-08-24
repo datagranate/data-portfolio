@@ -108,8 +108,6 @@ if prompt := st.chat_input("Ask a question about COBS (eg, 'What are the rules o
                 st.error(f"An error occurred: {e}")
 
 # Sidebar
-
-logo_path = 
 st.sidebar.image("images/datagranate_small_100.png")
 
 st.sidebar.markdown("---")
