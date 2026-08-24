@@ -1,8 +1,8 @@
 ![](images/banner.png)
 
 ## Data portfolio (in progress)
-- **marketing:** marketing project [(view project)](marketing): data cleaning and EDA, response prediction and SHAP analysis, RFM segmentation (advanced segmentation to come). [View Tableau interactive RFM dashboard](https://public.tableau.com/app/profile/data.granate/viz/MarketingRFMdashboard/Dashboard12)
-- **rag:** (to come) RAG pipeline demo
+- **marketing:** marketing project [(view project)](marketing): data cleaning and EDA, XGBoost profit maximisation model and SHAP analysis, RFM segmentation (advanced segmentation to come). [View Tableau interactive RFM dashboard](https://public.tableau.com/app/profile/data.granate/viz/MarketingRFMdashboard/Dashboard12)
+- **rag:** RAG pipeline demo [(view project)](rag): a Streamlit RAG application for querying a section of the FCA Handbook, using LangChain, Hugging Face's all-MiniLM-L6-v2 embeddings, a FAISS vector store and Groq's compound-mini LLM. [View chatbot app](https://fca-compliance-assistant.streamlit.app/)
 
 
 I am a data professional with over 10 years of experience, available immediately for remote or remote-first roles (and will consider hybrid). I specialise in turning complex data into measurable business outcomes, from insight-driven analysis and ETL pipelines to advanced predictive modelling.
