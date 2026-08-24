@@ -56,12 +56,17 @@ def load_vector_store():
             allow_dangerous_deserialization=True # Required for FAISS
         )
         
-        # 4. Debug: Check count
-        count = len(vector_store.docstore._dict) # FAISS specific way to count
-        st.sidebar.text(f"Total documents in index: {count}")
-        
-        if count == 0:
-            st.sidebar.error("❌ CRITICAL: Index is empty.")
+        # 4. Debug: Check count (FAISS specific)
+        # FAISS stores docs in .docstore._dict
+        if hasattr(vector_store, 'docstore') and hasattr(vector_store.docstore, '_dict'):
+            count = len(vector_store.docstore._dict)
+            st.sidebar.text(f"Total documents in index: {count}")
+            
+            if count == 0:
+                st.sidebar.error("❌ CRITICAL: Index is empty.")
+                return None
+        else:
+            st.sidebar.error("❌ Could not access docstore.")
             return None
 
         # 5. Test retrieval
@@ -74,6 +79,7 @@ def load_vector_store():
         else:
             st.sidebar.success(f"✅ Test Query Success! Found {len(docs)} docs.")
             st.sidebar.text(f"First doc preview: {docs[0].page_content[:100]}...")
+            
             
         return vector_store
         
