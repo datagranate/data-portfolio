@@ -109,12 +109,8 @@ if prompt := st.chat_input("Ask a question about COBS (eg, 'What are the rules o
 
 # Sidebar
 
-logo_path = "images/datagranate_small_100.png"
-if logo_path.exists():
-    try:
-        st.sidebar.logo(str(logo_path), width=100)
-    except AttributeError:
-        st.sidebar.image(str(logo_path), width=150)
+logo_path = 
+st.sidebar.image("images/datagranate_small_100.png")
 
 st.sidebar.markdown("---")
 
