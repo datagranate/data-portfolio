@@ -1,6 +1,5 @@
 import os
 import streamlit as st
-# from langchain_chroma import Chroma
 from langchain_groq import ChatGroq
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_core.prompts import ChatPromptTemplate
@@ -8,88 +7,46 @@ from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
 from langchain_community.vectorstores import FAISS
 
-
-# Configuration
+# configuration
 INDEX_PATH = "rag/faiss_index" 
 MODEL_NAME = "all-MiniLM-L6-v2"
-# MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
 GROQ_MODEL = "groq/compound-mini"
+GITHUB_REPO_URL = "https://github.com/datagranate/data-portfolio" 
 
 st.set_page_config(page_title="FCA COBS Compliance Assistant", page_icon="🏛️", layout="wide")
 st.title("FCA COBS Compliance Assistant")
 st.markdown("""
 This app answers questions based on the **UK FCA Handbook (COBS Chapters 1-10A)**.
-*Index built via `fca_cobs_indexing_notebook.ipynb`.*
 """)
 
 # Secrets
 api_key = st.secrets.get("GROQ_API_KEY")
 if not api_key:
-    st.warning("**API Key Missing**: Please set `GROQ_API_KEY` in Streamlit Cloud settings.")
+    st.warning("**API key missing**: Please set `GROQ_API_KEY` in Streamlit Cloud settings.")
     st.stop()
 os.environ["GROQ_API_KEY"] = api_key
 
-
 @st.cache_resource
 def load_vector_store():
-    st.sidebar.markdown("### 🛠️ Loading Index...")
-    
-    # 1. Check if folder exists
-    if not os.path.exists(INDEX_PATH):
-        st.error(f"❌ Index folder '{INDEX_PATH}' not found!")
-        return None
-    
-    # 2. Initialize Embeddings (Must match the one used to create the index)
-    try:
-        embeddings = HuggingFaceEmbeddings(model_name=MODEL_NAME)
-        st.sidebar.success(f"✅ Embeddings loaded: {MODEL_NAME}")
-    except Exception as e:
-        st.error(f"❌ Failed to load embeddings: {e}")
-        return None
-
-    # 3. Load FAISS
-    try:
-        # FAISS loads directly from the folder
-        vector_store = FAISS.load_local(
-            INDEX_PATH, 
-            embeddings, 
-            allow_dangerous_deserialization=True # Required for FAISS
-        )
-        
-        # 4. Debug: Check count (FAISS specific)
-        # FAISS stores docs in .docstore._dict
-        if hasattr(vector_store, 'docstore') and hasattr(vector_store.docstore, '_dict'):
-            count = len(vector_store.docstore._dict)
-            st.sidebar.text(f"Total documents in index: {count}")
+    with st.spinner("Loading compliance knowledge base..."):
+        try:
+            embeddings = HuggingFaceEmbeddings(model_name=MODEL_NAME)
+            vector_store = FAISS.load_local(
+                INDEX_PATH, 
+                embeddings, 
+                allow_dangerous_deserialization=True
+            )
             
-            if count == 0:
-                st.sidebar.error("❌ CRITICAL: Index is empty.")
+            # quick sanity check (silent)
+            if len(vector_store.docstore._dict) == 0:
+                st.error("Index is empty. Please check the data source.")
                 return None
-        else:
-            st.sidebar.error("❌ Could not access docstore.")
+                
+            return vector_store
+        except Exception as e:
+            st.error(f"Failed to load index: {e}")
             return None
 
-        # 5. Test retrieval
-        test_query = "What is the first line of COBS 1?"
-        docs = vector_store.similarity_search(test_query, k=1)
-        
-        if len(docs) == 0:
-            st.sidebar.error("❌ CRITICAL: Test query returned 0 documents!")
-            return None
-        else:
-            st.sidebar.success(f"✅ Test Query Success! Found {len(docs)} docs.")
-            st.sidebar.text(f"First doc preview: {docs[0].page_content[:100]}...")
-            
-            
-        return vector_store
-        
-    except Exception as e:
-        st.error(f"❌ Error loading FAISS: {e}")
-        import traceback
-        st.text(traceback.format_exc())
-        return None
-
-# Call it
 vector_store = load_vector_store()
 
 if vector_store is None:
@@ -144,14 +101,6 @@ if prompt := st.chat_input("Ask a question about COBS (eg, 'What are the rules o
                 context_docs = retriever.invoke(prompt)
                 context_text = "\n\n".join([doc.page_content for doc in context_docs])
 
-                # print to the Streamlit sidebar
-                with st.sidebar:
-                    st.markdown("### Retrieved Context (Debug)")
-                    st.text(context_text[:1000]) # Show first 1000 chars
-                    st.markdown("---")
-                    st.markdown("### Answer")
-
-                ###    
                 response = rag_chain.invoke(prompt)
                 st.markdown(response)
                 st.session_state.messages.append({"role": "assistant", "content": response})
