@@ -1,7 +1,7 @@
 ![](images/banner.png)
 
 ## Data portfolio (in progress)
-- **Marketing project:** [(view project)](marketing): data cleaning and EDA, XGBoost profit maximisation model and SHAP analysis, RFM segmentation (advanced segmentation to come). [View Tableau interactive RFM dashboard](https://public.tableau.com/app/profile/data.granate/viz/MarketingRFMdashboard/Dashboard12)
+- **Marketing project** [(view project)](marketing): data cleaning and EDA, XGBoost profit maximisation model and SHAP analysis, RFM segmentation (advanced segmentation to come). [View Tableau interactive RFM dashboard](https://public.tableau.com/app/profile/data.granate/viz/MarketingRFMdashboard/Dashboard12)
 - **RAG pipeline demo** [(view project)](rag): a Streamlit RAG application for querying a section of the FCA Handbook, using LangChain, Hugging Face's all-MiniLM-L6-v2 embeddings, a FAISS vector store and Groq's compound-mini LLM. [View chatbot app](https://fca-compliance-assistant.streamlit.app/)
 
 
