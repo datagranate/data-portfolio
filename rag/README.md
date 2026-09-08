@@ -17,4 +17,6 @@ To enable financial professionals to query complex regulatory text using natural
     *   *Note:* Currently using FAISS via `langchain-community` which is being sunsetted; planned migration, probably to ChromaDB
 *   **LLM:** ChatGroq (model: `compound-mini`), configured with `temperature=0` for deterministic, factual responses
 *   **Deployment:** Streamlit (`streamlit_app.py`) for an interactive web interface
+*   **Evaluation suite:** In progress. Have generated synthetic "golden" test cases using DeepEval, which I will audit against the source material to ensure accuracy and then use for future automated RAG evaluation.  
+
 
