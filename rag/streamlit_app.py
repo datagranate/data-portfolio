@@ -10,7 +10,7 @@ from langchain_community.vectorstores import FAISS
 # configuration
 INDEX_PATH = "rag/faiss_index" 
 MODEL_NAME = "all-MiniLM-L6-v2"
-GROQ_MODEL = "groq/compound-mini"
+GROQ_MODEL = "openai/gpt-oss-20b"
 GITHUB_REPO_URL = "https://github.com/datagranate/data-portfolio" 
 
 st.set_page_config(page_title="FCA COBS Compliance Assistant", page_icon="🏛️", layout="wide")
