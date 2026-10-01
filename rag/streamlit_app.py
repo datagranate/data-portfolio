@@ -77,12 +77,12 @@ prompt = ChatPromptTemplate.from_template(prompt_template)
 retriever = vector_store.as_retriever(search_kwargs={"k": 6})
 retrieval_chain = retriever | (lambda docs: "\n\n".join([doc.page_content for doc in docs]))
 
-rag_chain = (
-    {"context": retriever, "question": RunnablePassthrough()}
-    | prompt 
-    | llm 
-    | StrOutputParser()
-)
+# rag_chain = (
+#     {"context": retriever, "question": RunnablePassthrough()}
+#     | prompt 
+#     | llm 
+#     | StrOutputParser()
+# )
 
 # Chat UI
 if "messages" not in st.session_state:
@@ -106,6 +106,21 @@ def build_conversation_history(messages, max_turns=4):
     
     return "\n".join(history_parts)
 
+rewrite_prompt = ChatPromptTemplate.from_messages([
+    ("system", """Rewrite this chat history + current question into a standalone question. 
+Include all necessary context from the conversation to make it searchable.
+Only output the rewritten question, nothing else."""),
+    ("human", """Chat history:
+{chat_history}
+
+Current question:
+{question}
+
+Rewritten standalone question:""")
+])
+
+rewrite_chain = rewrite_prompt | llm | StrOutputParser()
+
 if user_prompt := st.chat_input("Ask a question about COBS (eg, 'What are the rules on inducements?'):"):
     st.session_state.messages.append({"role": "user", "content": user_prompt})
     with st.chat_message("user"):
@@ -114,14 +129,27 @@ if user_prompt := st.chat_input("Ask a question about COBS (eg, 'What are the ru
     with st.chat_message("assistant"):
         with st.spinner("Searching FCA Handbook..."):
             try:
-                # build conversation history
+                # Step 1: Build conversation history
                 chat_history = build_conversation_history(st.session_state.messages)
                 
-                # retrieve context based on current question
-                context_docs = retriever.invoke(user_prompt)
+                # Step 2: REWRITE the query using conversation history (if history exists)
+                if chat_history.strip():
+                    with st.spinner("Understanding context..."):
+                        rewritten_query = rewrite_chain.invoke({
+                            "chat_history": chat_history,
+                            "question": user_prompt
+                        })
+                        print(f"Original: {user_prompt}")  # Debug: console log
+                        print(f"Rewritten: {rewritten_query}")  # Debug: console log
+                        search_query = rewritten_query.strip()
+                else:
+                    search_query = user_prompt
+                
+                # Step 3: Retrieve using the REWRITTEN query
+                context_docs = retriever.invoke(search_query)
                 context_text = "\n\n".join([doc.page_content for doc in context_docs])
                 
-                # invoke chain with required inputs
+                # Step 4: Generate answer using both history AND context
                 response = prompt.format(
                     chat_history=chat_history,
                     context=context_text,
