@@ -55,8 +55,7 @@ if vector_store is None:
 llm = ChatGroq(model_name=GROQ_MODEL, temperature=0)
 
 # RAG chain
-prompt = ChatPromptTemplate.from_messages([
-    ("system", """You are a professional UK Financial Compliance Assistant. 
+prompt_template = """You are a professional UK Financial Compliance Assistant. 
 Answer the user's question using ONLY the provided context from the FCA COBS handbook (Chapters 1-10A).
     
 CRITICAL INSTRUCTIONS:
@@ -65,14 +64,18 @@ CRITICAL INSTRUCTIONS:
 3. If the answer is not in the context, simply state: "I cannot find this information in the provided COBS chapters."
 4. Do not hallucinate. Be precise and professional.
 
+Use the conversation history below to understand references like "that", "this rule", "the previous topic", etc.
+
+Conversation history: {chat_history}
 Context: {context}
 Question: {question}
 
-Helpful answer:"""),
-    ("human", "{question}")
-])
+Helpful answer:"""
+
+prompt = ChatPromptTemplate.from_template(prompt_template)
 
 retriever = vector_store.as_retriever(search_kwargs={"k": 6})
+retrieval_chain = retriever | (lambda docs: "\n\n".join([doc.page_content for doc in docs]))
 
 rag_chain = (
     {"context": retriever, "question": RunnablePassthrough()}
@@ -89,21 +92,46 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-if prompt := st.chat_input("Ask a question about COBS (eg, 'What are the rules on inducements?'):"):
-    st.session_state.messages.append({"role": "user", "content": prompt})
+# multi-turn chat handler
+def build_conversation_history(messages, max_turns=4):
+    if len(messages) <= 1:
+        return ""
+    
+    history_parts = []
+    recent_messages = messages[-max_turns:]  # get last turns up to max_turns
+    
+    for msg in recent_messages[:-1]:  # exclude most recent question
+        role = "User" if msg["role"] == "user" else "Assistant"
+        history_parts.append(f"{role}: {msg['content']}")
+    
+    return "\n".join(history_parts)
+
+if user_prompt := st.chat_input("Ask a question about COBS (eg, 'What are the rules on inducements?'):"):
+    st.session_state.messages.append({"role": "user", "content": user_prompt})
     with st.chat_message("user"):
-        st.markdown(prompt)
+        st.markdown(user_prompt)
 
     with st.chat_message("assistant"):
         with st.spinner("Searching FCA Handbook..."):
             try:
-                # get the raw context to debug
-                context_docs = retriever.invoke(prompt)
+                # build conversation history
+                chat_history = build_conversation_history(st.session_state.messages)
+                
+                # retrieve context based on current question
+                context_docs = retriever.invoke(user_prompt)
                 context_text = "\n\n".join([doc.page_content for doc in context_docs])
-
-                response = rag_chain.invoke(prompt)
-                st.markdown(response)
-                st.session_state.messages.append({"role": "assistant", "content": response})
+                
+                # invoke chain with required inputs
+                response = prompt.format(
+                    chat_history=chat_history,
+                    context=context_text,
+                    question=user_prompt
+                )
+                response = llm.invoke(response)
+                response_text = StrOutputParser().invoke(response)
+                
+                st.markdown(response_text)
+                st.session_state.messages.append({"role": "assistant", "content": response_text})
             except Exception as e:
                 st.error(f"An error occurred: {e}")
 
