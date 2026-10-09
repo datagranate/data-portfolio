@@ -15,9 +15,7 @@ To enable financial professionals to query complex regulatory text using natural
 *   **Embeddings:** Hugging Face's `all-MiniLM-L6-v2` for dense vector representation
 *   **Vector store:** FAISS (Facebook AI Similarity Search) for efficient similarity search
     *   *Note:* Currently using FAISS via `langchain-community` which is being sunsetted; planned migration, probably to ChromaDB
-*   **LLM:** ChatGroq (model: `openai/gpt-oss-20b`), configured with `temperature=0` as a baseline for consistent responses (experimentation planned). Multi-turn conversation support in development; query rewriting implemented to handle follow-up questions contextually
+*   **LLM:** ChatGroq (current model: `openai/gpt-oss-20b`), configured with `temperature=0` as a baseline for consistent responses (experimentation planned).
 *   **Deployment:** Streamlit (`streamlit_app.py`) for an interactive web interface. 
-*   **Evaluation suite:** In progress. Have generated synthetic "golden" test cases using DeepEval calling `groq/compound-mini` (now deprecated), which I am checking against the source material to ensure accuracy and then will use for automated RAG evaluation. 
-*   **Monitoring and evaluation:** MLFlow experiment tracking on Databricks (run ID logged per query for traceability)
-
+*   **Evaluation suite:** Built with DeepEval using Groq models. Generated synthetic "golden" test cases calling `groq/compound-mini` (now deprecated), which I am checking against the source material to ensure accuracy. Initial set of approved goldens evaluated using Answer Relevance, Faithfulness and a customer Tone/Citation metric. Uses `qwen/qwen3.8-27b` as the judge model and `openai/gpt-oss-20b` as the chat model; deliberately choosing different models to avoid self-preference bias. Baseline logged with MLFlow, further experimentation planned.
 

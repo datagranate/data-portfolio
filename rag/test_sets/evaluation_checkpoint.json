@@ -1,0 +1,136 @@
+{
+  "evaluated_cids": [
+    "COBS1-ebae93b6cccd",
+    "COBS3-07a626d4e634",
+    "COBS2-93e06e0cbd46",
+    "COBS2-1012600a0e38",
+    "COBS10A-99c47c706695",
+    "COBS3-17cb99f40d06",
+    "COBS2-93e06e0cbd46",
+    "COBS2-e16b04ab7890",
+    "COBS1-743cafd42577",
+    "COBS1-b74ce9c03ea0"
+  ],
+  "results": [
+    {
+      "cid": "COBS1-ebae93b6cccd",
+      "question": "How does COBS\u202f4.6 compliance for structured\u2011deposit promotions to retail clients differ from COBS\u202f4.7?",
+      "answer": "COBS\u202f4.6 applies to financial promotions that relate to **structured deposits** and that are addressed to or likely to be received by a retail client.  \nCOBS\u202f4.7 applies to financial promotions that relate to **cash\u2011deposit ISAs, cash\u2011only lifetime ISAs or cash\u2011deposit CTFs** and that are addressed to or likely to be received by a retail client.",
+      "expected_output": "COBS\u202f4.6 governs promotions for **structured deposits**, specifically covering communications that include past, simulated\u2011past or future performance information and must be approved before being sent to retail clients.  \n\nCOBS\u202f4.7, by contrast, applies to **cash\u2011deposit products** (cash\u2011deposit ISA, cash\u2011only lifetime ISA or cash\u2011deposit CTF) and regulates direct\u2011offer financial promotions of those products to retail clients.  \n\nSo the key difference is the product type and the focus of the rule: 4.6\u202f=\u202fstructured\u2011deposit performance\u2011related promotions; 4.7\u202f=\u202fdirect offers for cash\u2011deposit ISA/CTF products.",
+      "answer_relevancy": 1.0,
+      "relevance_reason": "The score is 1.00 because the output contains no irrelevant statements, fully addressing the input with precision.",
+      "faithfulness": 1.0,
+      "faithfulness_reason": "The score is 1.00 because the actual output is perfectly faithful to the retrieval context, with no contradictions detected. Great job maintaining complete accuracy!",
+      "tone_citation": 0,
+      "tone_citation_reason": "The Actual Output cites COBS 4.6 and COBS 4.7, but the evaluation criteria requires verifying a match against a specific regulation number provided in the context, which is missing from the input; without the context, it is impossible to confirm if the cited numbers are the correct ones required by the criteria, and the output does not explicitly reference a single specific regulation number as implied by the singular 'the specific COBS regulation number' in step 2."
+    },
+    {
+      "cid": "COBS3-07a626d4e634",
+      "question": "How does COBS define a retail client?",
+      "answer": "I cannot find this information in the provided COBS chapters.",
+      "expected_output": "COBS\u202f3.4 defines a retail client as **any client that is not a professional client or an eligible counterparty** (MiFID article\u202f4(1)(11)).  \n\n**Service\u2011specific rules:**  \n- When a firm provides services related to a **CTF** (except a personal recommendation on a CTF contribution), the client is treated as a retail client **even if it would otherwise be classified as a professional client or an eligible counterparty** (COBS\u202f3.4.2).  \n- For a **targeted support service**, the firm must treat the client as a retail client **for that service**, regardless of any other classification (COBS\u202f3.4.3). This chapter does not apply to the provision of the targeted support service itself.",
+      "answer_relevancy": null,
+      "relevance_reason": null,
+      "faithfulness": 1,
+      "faithfulness_reason": "The score is 1.00 because the actual output is perfectly faithful to the retrieval context, with no contradictions detected. Great job maintaining complete accuracy!",
+      "tone_citation": 0,
+      "tone_citation_reason": "The Actual Output fails to explicitly reference or cite the specific COBS regulation number required by the evaluation steps, instead stating that the information cannot be found."
+    },
+    {
+      "cid": "COBS2-93e06e0cbd46",
+      "question": "Why must providers offer equal high\u2011value non\u2011monetary benefits to all firms and ensure adv\u2011charging compliance?",
+      "answer": "Because COBS 2.3.16 states that a benefit made available to one firm and not another is more likely to impair compliance with the client\u2019s best\u2011interests rule, providers must give equal high\u2011value non\u2011monetary benefits to all firms. COBS 2.3.14 and 2.3.15\u202fG further require that such benefits be reasonable, disclosed, and not impair the firm\u2019s duty to act honestly, fairly and professionally.  \n\nCOBS 6.1E.3, 6.1E.4, 6.1E.5 and 6.1E.8 mandate that platform and adviser charges be transparent, not varied inappropriately, and not used to influence product choice. Ensuring adviser\u2011charging compliance therefore protects the client\u2019s best interests and satisfies the Consumer Duty.",
+      "expected_output": "Providers must give high\u2011value non\u2011monetary benefits equally to all firms so that no firm receives an advantage that could breach the client\u2019s best\u2011interests rule (COBS\u202f2.3.16) or create an inducement conflict (COBS\u202f2.3.1R). Equal treatment also ensures compliance with adviser\u2011charging rules (COBS\u202f6.1A/6.1C), preventing unfair or improper remuneration that could impair regulatory compliance.",
+      "answer_relevancy": 1.0,
+      "relevance_reason": "The score is 1.00 because the output contains no irrelevant statements, fully addressing the input with perfect relevancy.",
+      "faithfulness": 0.8333333333333334,
+      "faithfulness_reason": "The score is 0.83 because the actual output incorrectly cites COBS 2.3.16 for the statement about benefits made available to one firm and not another, whereas the retrieval context attributes this to the general guidance on reasonable non-monetary benefits associated with COBS 2.3.15 G.",
+      "tone_citation": 1,
+      "tone_citation_reason": "The output maintains a consistently professional tone and explicitly cites specific COBS regulation numbers (e.g., COBS 2.3.16, 6.1E.3) without apparent hallucinations or informal language."
+    },
+    {
+      "cid": "COBS2-1012600a0e38",
+      "question": "Is a fee enhancing service quality yet complying with duty excluded from COBS\u202f2.3A.5R?",
+      "answer": "No. A fee that is designed to enhance service quality and complies with the duty is not excluded from COBS\u202f2.3A.5R.",
+      "expected_output": "Yes. COBS\u202f2.3A.5R does not apply to a fee, commission or non\u2011monetary benefit that (i) is designed to enhance the quality of the service to the client and (ii) does not impair the firm\u2019s duty to act honestly, fairly and professionally in the client\u2019s best interests.\u3010Context\u3011",
+      "answer_relevancy": 1.0,
+      "relevance_reason": "The score is 1.00 because the output contains no irrelevant statements, fully addressing the input with precision.",
+      "faithfulness": null,
+      "faithfulness_reason": null,
+      "tone_citation": 0,
+      "tone_citation_reason": "The Actual Output cites 'COBS 2.3A.5R', which is a hallucinated regulation number as COBS 2.3A does not exist in the standard FCA handbook structure, failing the accuracy check for the specific regulation number."
+    },
+    {
+      "cid": "COBS10A-99c47c706695",
+      "question": "What is the minimum retention period for MiFID/IBIP records, and how does it compare with other regulatory record\u2011keeping requirements?",
+      "answer": "MiFID/IBIP records must be retained for a minimum of five\u202fyears.  \nThis matches the minimum period required for appropriateness records under COBS\u202f10\u202fand COBS\u202f10A (five\u202fyears).  \nOther record\u2011keeping obligations differ: pension\u2011related assessments (pension transfer, conversion, opt\u2011out, FSAVC) are kept indefinitely; life\u2011policy or pension\u2011contract appropriateness records are kept for at least five\u202fyears; and in all other cases the retention period is three\u202fyears.",
+      "expected_output": "The firm must keep MiFID and insurance\u2011based investment product records for **at least five years**. This aligns with the broader regulatory record\u2011keeping rules (e.g., SYSC\u202f3.3 and SYSC\u202f9), which also generally impose a five\u2011year minimum retention period.",
+      "answer_relevancy": 1.0,
+      "relevance_reason": "The score is 1.00 because the output contains no irrelevant statements, fully addressing the input with high precision.",
+      "faithfulness": 0.8,
+      "faithfulness_reason": "The score is 0.80 because the output incorrectly asserts that IBIP records must be retained for a minimum of five years, whereas the context only specifies a five-year retention period for MiFID records and implies a three-year period for 'other cases' (which likely includes IBIP), thus contradicting the claim's unified five-year rule.",
+      "tone_citation": 0,
+      "tone_citation_reason": "The Actual Output cites 'COBS 10 and COBS 10A', which does not match the specific regulation number provided in the context (typically COBS 10.1.1R or similar for appropriateness records), failing the accuracy check for the citation."
+    },
+    {
+      "cid": "COBS3-17cb99f40d06",
+      "question": "What firm action should be taken when a client loses elective\u2011professional status?",
+      "answer": "The firm must take the appropriate action. If that action requires re\u2011categorising the client as a retail client, the firm must notify the client of its new categorisation.",
+      "expected_output": "The firm must take the appropriate action once it knows the client no longer meets the elective\u2011professional criteria; if that action is to re\u2011categorise the client as a retail client, the firm must inform the client of its new retail status.",
+      "answer_relevancy": 0.5,
+      "relevance_reason": "The score is 0.50 because the output fails to specify the actual firm action required, instead providing a tautological statement that does not address the specific question asked.",
+      "faithfulness": 1.0,
+      "faithfulness_reason": "The score is 1.00 because the actual output is perfectly faithful to the retrieval context, with no contradictions detected. Great job maintaining complete accuracy!",
+      "tone_citation": 0,
+      "tone_citation_reason": "The Actual Output fails to explicitly reference or cite any specific COBS regulation number, which is required by the evaluation steps."
+    },
+    {
+      "cid": "COBS2-93e06e0cbd46",
+      "question": "How must providers offer substantial non\u2011monetary benefits (training, visits, co\u2011hosting) to meet adviser/consultancy best\u2011interest rules?",
+      "answer": "Substantial non\u2011monetary benefits such as training programmes, visits to the provider\u2019s office or co\u2011hosting arrangements must be made available **equally to all firms that are subject to the adviser charging and remuneration rules (COBS\u202f6.1A) or the consultancy charging and remuneration rules (COBS\u202f6.1C)**.  \n\nIf a benefit is offered to one firm and not to another, it is more likely to impair compliance with the client\u2019s best\u2011interests rule. Therefore, providers must ensure that any substantial benefit is offered on a non\u2011discriminatory basis and that acceptance of such benefits does not compromise the firm\u2019s ability to act in the client\u2019s best interests.",
+      "expected_output": "Providers must make substantial non\u2011monetary benefits (e.g., training programmes, visits, co\u2011hosting) available on an equal basis to all firms that are subject to the adviser\u2011charging (COBS\u202f6.1A) or consultancy\u2011charging (COBS\u202f6.1C) rules. They must not give such benefits to only some firms, and must avoid benefits that create a reliance on the provider\u2019s systems or software, as that could impair compliance with the client\u2019s best\u2011interest rule (COBS\u202f2.3.1R).",
+      "answer_relevancy": 1.0,
+      "relevance_reason": "The score is 1.00 because the output contains no irrelevant statements, fully addressing the input with relevant information.",
+      "faithfulness": 0.5,
+      "faithfulness_reason": "The score is 0.50 because the output incorrectly identifies 'visits to the provider\u2019s office, or co-hosting arrangements' as examples of substantial non-monetary benefits, whereas the context only lists 'adviser training programmes or significant software'. Additionally, the output falsely claims that offering a benefit to one firm but not another impairs compliance, while the context specifically links compliance impairment to the firm's reliance on the benefit over time, not the discriminatory nature of the offer.",
+      "tone_citation": 1,
+      "tone_citation_reason": "The output maintains a professional tone and explicitly cites the specific COBS regulation numbers (COBS 6.1A and COBS 6.1C) without errors."
+    },
+    {
+      "cid": "COBS2-e16b04ab7890",
+      "question": "How does COBS\u202f2.4.3 determine client status when C1 acts as C2\u2019s agent?",
+      "answer": "I cannot find this information in the provided COBS chapters.",
+      "expected_output": "COBS\u202f2.4.3 says that, by default, if a firm (F) knows a person\u202fC1 is acting as an agent for another person\u202fC2, then **C1 \u2013 not C2 \u2013 is treated as F\u2019s client** for that business. This rule does not apply if (a) F has a written agreement to treat C2 as its client, or (b) C1 is neither a firm nor an overseas financial services institution and the arrangement\u2019s main purpose is to avoid duties F would otherwise owe C2; in those cases **C2 becomes the client and C1 is not**.",
+      "answer_relevancy": 1.0,
+      "relevance_reason": "The score is 1.00 because the output contains no irrelevant statements, fully addressing the input with precision.",
+      "faithfulness": null,
+      "faithfulness_reason": null,
+      "tone_citation": 0,
+      "tone_citation_reason": "The Actual Output fails to explicitly reference or cite the specific COBS regulation number required by the evaluation steps, instead stating that the information cannot be found."
+    },
+    {
+      "cid": "COBS1-743cafd42577",
+      "question": "If a Gibraltar firm launches a crypto promotion, how must COBS\u202f4.10/4.11 apply?",
+      "answer": "COBS\u202f4.10 requires the firm to obtain approval and confirm that the crypto\u2011promotion complies with all applicable rules before it is communicated.  \nCOBS\u202f4.11 requires the firm to keep a record of the promotion, including the approval process, the content of the promotion, and any evidence that it meets the regulatory requirements.  \n\nFor a Gibraltar\u2011based firm, these provisions apply in the same way as for UK\u2011based firms, with the additional requirement that the firm must also comply with the Gibraltar\u2011specific application rules set out in the annex to GEN\u202f2.3.1R.",
+      "expected_output": "The firm must obtain approval and confirm that the crypto promotion complies with the rules (COBS\u202f4.10) and must keep the required records of that promotion (COBS\u202f4.11).",
+      "answer_relevancy": 1.0,
+      "relevance_reason": "The score is 1.00 because the response contains no irrelevant statements and fully addresses the input.",
+      "faithfulness": 1.0,
+      "faithfulness_reason": "The score is 1.00 because the actual output is perfectly faithful to the retrieval context, with no contradictions detected. Great job maintaining complete accuracy!",
+      "tone_citation": 0,
+      "tone_citation_reason": "The Actual Output cites COBS 4.10 and COBS 4.11, which are not the specific regulation numbers provided in the context (implied to be different based on the failure to match the correct number), resulting in a hallucination or error in citation."
+    },
+    {
+      "cid": "COBS1-b74ce9c03ea0",
+      "question": "Which COBS clauses are exempted for MTF operator\u2011member transactions under MiFID?",
+      "answer": "COBS\u202f2 (other than COBS\u202f2.4), COBS\u202f4 (other than COBS transactions undertaken by it), and COBS\u202f6.1ZA.25 are exempted for MTF operator\u2011member transactions under MiFID.",
+      "expected_output": "The COBS provisions that do **not** apply to a transaction between an MTF operator and a member/participant are:\n\n- **COBS\u202f2** (except COBS\u202f2.4) \u2013 conduct of business obligations  \n- **COBS\u202f4** (except COBS\u202f4.4.1R) \u2013 communicating with clients, including financial promotions  \n- **COBS\u202f6.1ZA** \u2013 information about the firm and compensation (non\u2011advised services)  \n- **COBS\u202f11.2A, 11.2B, 11.3** \u2013 best execution, quality of execution, client order handling and client limit orders  \n- **COBS\u202f14.3A** \u2013 information about financial instruments (MiFID\u2011related client information)  \n\nThese clauses are exempted for MTF operator\u2011member transactions under MiFID.",
+      "answer_relevancy": 1.0,
+      "relevance_reason": "The score is 1.00 because the output contains no irrelevant statements, fully addressing the input with precision.",
+      "faithfulness": 1.0,
+      "faithfulness_reason": "The score is 1.00 because the actual output is perfectly faithful to the retrieval context, with no contradictions detected. Great job maintaining complete accuracy!",
+      "tone_citation": 0,
+      "tone_citation_reason": "The Actual Output cites specific regulations (COBS 2, COBS 4, COBS 6.1ZA.25) but fails to explicitly reference the specific COBS regulation number provided in the context, as required by the evaluation steps."
+    }
+  ]
+}

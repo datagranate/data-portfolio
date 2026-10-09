@@ -1,7 +1,8 @@
 import os
 import time
-from openai import OpenAI
+from openai import OpenAI, RateLimitError
 from deepeval.models import DeepEvalBaseLLM
+import asyncio
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -32,30 +33,19 @@ class CustomGroqModel(DeepEvalBaseLLM):
         return self.client
 
     def generate(self, prompt: str) -> str:
-        max_retries = 3
-        last_error = None
-
-        for attempt in range(max_retries):
-
-            if self.seconds_delay > 0:
-                time.sleep(self.seconds_delay * (1 + attempt * 0.5))  # backoff
-            try:
-                response = self.client.chat.completions.create(
-                    model=self._model_name,
-                    messages=[{"role": "user", "content": prompt}],
-                    temperature=self.temperature,
-                    max_tokens=self.max_tokens,
-                )
-                return response.choices[0].message.content
-            except RateLimitError as e:
-                last_error = RateLimitError
-                continue  # retry with increased delay
-            except Exception as e:
-                raise RuntimeError(f"Groq API call failed on attempt {attempt+1}: {e}")
-        raise last_error
+        try:
+            response = self.client.chat.completions.create(
+                model=self._model_name,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=self.temperature,
+                max_tokens=self.max_tokens,
+            )
+            return response.choices[0].message.content
+        except Exception as e:
+            raise RuntimeError(f"Groq API call failed: {e}")
 
     async def a_generate(self, prompt: str) -> str:
-        return self.generate(prompt)
+        return await asyncio.to_thread(self.generate, prompt)
 
     def get_model_name(self) -> str:
         return f"Groq: {self._model_name}"
