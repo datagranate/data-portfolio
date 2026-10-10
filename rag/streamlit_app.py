@@ -94,18 +94,19 @@ for message in st.session_state.messages:
 
 # multi-turn chat handler
 def build_conversation_history(messages, max_turns=4):
-    if len(messages) <= 1:
+    if not messages:
         return ""
     
-    history_parts = []
-    recent_messages = messages[-max_turns:]  # get last turns up to max_turns
+    # include the *current* user message in the history string so the model sees the full context of the *current* turn's intent
+    recent_messages = messages[-max_turns:]
     
-    for msg in recent_messages[:-1]:  # exclude most recent question
+    history_parts = []
+    for msg in recent_messages:
         role = "User" if msg["role"] == "user" else "Assistant"
-        history_parts.append(f"{role}: {msg['content']}")
+        content = msg.get('content', '')
+        history_parts.append(f"{role}: {content}")
     
     return "\n".join(history_parts)
-
 rewrite_prompt = ChatPromptTemplate.from_messages([
     ("system", """Rewrite this chat history + current question into a standalone question. 
 Include all necessary context from the conversation to make it searchable.
