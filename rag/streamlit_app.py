@@ -108,16 +108,22 @@ def build_conversation_history(messages, max_turns=4):
     
     return "\n".join(history_parts)
 rewrite_prompt = ChatPromptTemplate.from_messages([
-    ("system", """Rewrite this chat history + current question into a standalone question. 
-Include all necessary context from the conversation to make it searchable.
-Only output the rewritten question, nothing else."""),
+    ("system", """You are a query rewriter for a RAG system.
+
+Given the chat history and the current question, output a standalone search query.
+
+RULES:
+1. If the current question depends on the conversation (e.g., "more details", "what about that rule?", "and exclusions?"), rewrite it to include the relevant context from history.
+2. If the current question introduces a NEW TOPIC and can be understood without history, IGNORE the history entirely and output only the current question.
+3. Only output the rewritten query, nothing else.""")
+    ,
     ("human", """Chat history:
 {chat_history}
 
 Current question:
 {question}
 
-Rewritten standalone question:""")
+Standalone search query:""")
 ])
 
 rewrite_chain = rewrite_prompt | llm | StrOutputParser()
@@ -146,11 +152,10 @@ if user_prompt := st.chat_input("Ask a question about COBS (eg, 'What are the ru
                 # retrieve using rewritten query
                 context_docs = retriever.invoke(search_query)
                 context_text = "\n\n".join([doc.page_content for doc in context_docs])
-                
+               
                 response = prompt.format(
-                    chat_history=chat_history,
                     context=context_text,
-                    question=user_prompt
+                    question=search_query  
                 )
                 
                 # --- DEBUG BLOCK START ---
