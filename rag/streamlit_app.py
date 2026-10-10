@@ -151,6 +151,25 @@ if user_prompt := st.chat_input("Ask a question about COBS (eg, 'What are the ru
                     context=context_text,
                     question=user_prompt
                 )
+                
+                # --- DEBUG BLOCK START ---
+                if st.session_state.get('debug_mode', False):
+                    st.markdown("DEBUG: Search query")
+                    st.code(search_query)
+                    
+                    st.markdown("DEBUG: Retrieved context")
+                    st.write(f"Found {len(context_docs)} docs.")
+                    if len(context_docs) == 0:
+                        st.error("NO DOCS RETRIEVED!")
+                    else:
+                        for i, doc in enumerate(context_docs):
+                            st.text_area(f"Doc {i+1} ({len(doc.page_content)} chars)", value=doc.page_content[:500], key=f"dbg_doc_{i}")
+                            
+                    st.markdown("DEBUG: Final prompt sent to LLM")
+                    st.text_area("Full Prompt", value=response, height=300)
+                # --- DEBUG BLOCK END ---
+                
+                
                 response = llm.invoke(response)
                 response_text = StrOutputParser().invoke(response)
                 
@@ -162,6 +181,12 @@ if user_prompt := st.chat_input("Ask a question about COBS (eg, 'What are the ru
 # Sidebar
 st.sidebar.image("images/datagranate_logo.png")
 st.sidebar.success(f"[Visit my data portfolio]({GITHUB_REPO_URL})")
+
+# --- DEBUG TOGGLE START ---
+with st.sidebar.expander("Debug Mode"):
+    show_debug = st.checkbox("Show Prompt Debug", value=False)
+    st.session_state['debug_mode'] = show_debug
+# --- DEBUG TOGGLE END ---
 
 st.sidebar.markdown("---")
 
