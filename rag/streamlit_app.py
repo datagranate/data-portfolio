@@ -64,9 +64,6 @@ CRITICAL INSTRUCTIONS:
 3. If the answer is not in the context, simply state: "I cannot find this information in the provided COBS chapters."
 4. Do not hallucinate. Be precise and professional.
 
-Use the conversation history below to understand references like "that", "this rule", "the previous topic", etc.
-
-Conversation history: {chat_history}
 Context: {context}
 Question: {question}
 
@@ -107,6 +104,7 @@ def build_conversation_history(messages, max_turns=4):
         history_parts.append(f"{role}: {content}")
     
     return "\n".join(history_parts)
+
 rewrite_prompt = ChatPromptTemplate.from_messages([
     ("system", """You are a query rewriter for a RAG system.
 
