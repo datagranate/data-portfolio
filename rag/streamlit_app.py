@@ -74,13 +74,6 @@ prompt = ChatPromptTemplate.from_template(prompt_template)
 retriever = vector_store.as_retriever(search_kwargs={"k": 6})
 retrieval_chain = retriever | (lambda docs: "\n\n".join([doc.page_content for doc in docs]))
 
-# rag_chain = (
-#     {"context": retriever, "question": RunnablePassthrough()}
-#     | prompt 
-#     | llm 
-#     | StrOutputParser()
-# )
-
 # Chat UI
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -136,7 +129,10 @@ if user_prompt := st.chat_input("Ask a question about COBS (eg, 'What are the ru
             try:
                 chat_history = build_conversation_history(st.session_state.messages)
                 
-                # rewrite query using conversation history (history exists)
+                # default search query is user's raw question
+                search_query = user_prompt
+                
+                # rewrite only if actual prior conversation 
                 if len(st.session_state.messages) > 1:
                     with st.spinner("Understanding context..."):
                         rewritten_query = rewrite_chain.invoke({
@@ -144,18 +140,16 @@ if user_prompt := st.chat_input("Ask a question about COBS (eg, 'What are the ru
                             "question": user_prompt
                         })
                         search_query = rewritten_query.strip()
-                else:
-                    search_query = user_prompt
                 
                 # retrieve using rewritten query
-                context_docs = retriever.invoke(rewritten_query)
+                context_docs = retriever.invoke(search_query)
                 context_text = "\n\n".join([doc.page_content for doc in context_docs])
                
                 response = prompt.format(
                     context=context_text,
-                    question=rewritten_query
+                    question=search_query  
                 )
-                
+                                
                 # --- DEBUG BLOCK START ---
                 if st.session_state.get('debug_mode', False):
                     st.markdown("###DEBUG: Search query")
