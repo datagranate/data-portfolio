@@ -166,7 +166,6 @@ if user_prompt := st.chat_input("Ask a question about COBS (eg, 'What are the ru
                     st.markdown("###DEBUG: Final prompt sent to LLM")
                     st.text_area("Full prompt", value=response, height=300)
                 # --- DEBUG BLOCK END ---
-                
                 response = llm.invoke(response)
                 response_text = StrOutputParser().invoke(response)
 
@@ -175,6 +174,8 @@ if user_prompt := st.chat_input("Ask a question about COBS (eg, 'What are the ru
                 else:
                     st.markdown(response_text)
                     st.session_state.messages.append({"role": "assistant", "content": response_text})
+            except Exception as e:
+                st.error(f"An error occurred: {e}")
 
 # Sidebar
 st.sidebar.image("images/datagranate_logo.png")
