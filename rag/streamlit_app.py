@@ -137,7 +137,7 @@ if user_prompt := st.chat_input("Ask a question about COBS (eg, 'What are the ru
                 chat_history = build_conversation_history(st.session_state.messages)
                 
                 # rewrite query using conversation history (history exists)
-                if chat_history.strip():
+                if len(st.session_state.messages) > 1:
                     with st.spinner("Understanding context..."):
                         rewritten_query = rewrite_chain.invoke({
                             "chat_history": chat_history,
@@ -148,20 +148,20 @@ if user_prompt := st.chat_input("Ask a question about COBS (eg, 'What are the ru
                     search_query = user_prompt
                 
                 # retrieve using rewritten query
-                context_docs = retriever.invoke(search_query)
+                context_docs = retriever.invoke(rewritten_query)
                 context_text = "\n\n".join([doc.page_content for doc in context_docs])
                
                 response = prompt.format(
                     context=context_text,
-                    question=search_query  
+                    question=rewritten_query
                 )
                 
                 # --- DEBUG BLOCK START ---
                 if st.session_state.get('debug_mode', False):
-                    st.markdown("DEBUG: Search query")
+                    st.markdown("###DEBUG: Search query")
                     st.code(search_query)
                     
-                    st.markdown("DEBUG: Retrieved context")
+                    st.markdown("###DEBUG: Retrieved context")
                     st.write(f"Found {len(context_docs)} docs.")
                     if len(context_docs) == 0:
                         st.error("NO DOCS RETRIEVED!")
@@ -169,8 +169,8 @@ if user_prompt := st.chat_input("Ask a question about COBS (eg, 'What are the ru
                         for i, doc in enumerate(context_docs):
                             st.text_area(f"Doc {i+1} ({len(doc.page_content)} chars)", value=doc.page_content[:500], key=f"dbg_doc_{i}")
                             
-                    st.markdown("DEBUG: Final prompt sent to LLM")
-                    st.text_area("Full Prompt", value=response, height=300)
+                    st.markdown("###DEBUG: Final prompt sent to LLM")
+                    st.text_area("Full prompt", value=response, height=300)
                 # --- DEBUG BLOCK END ---
                 
                 
