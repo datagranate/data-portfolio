@@ -52,7 +52,7 @@ vector_store = load_vector_store()
 if vector_store is None:
     st.stop()
 
-llm = ChatGroq(model_name=GROQ_MODEL, temperature=0)
+llm = ChatGroq(model_name=GROQ_MODEL, temperature=0, max_tokens=4096)
 
 # RAG chain
 prompt_template = """You are a professional UK Financial Compliance Assistant. 
@@ -170,6 +170,12 @@ if user_prompt := st.chat_input("Ask a question about COBS (eg, 'What are the ru
                 
                 response = llm.invoke(response)
                 response_text = StrOutputParser().invoke(response)
+
+                if not response_text.strip():
+                    st.error("Model returned an empty response (likely due to token limits). Try increasing max_tokens.")
+                else:
+                    st.markdown(response_text)
+                    st.session_state.messages.append({"role": "assistant", "content": response_text})
                 
                 st.markdown(response_text)
                 st.session_state.messages.append({"role": "assistant", "content": response_text})
