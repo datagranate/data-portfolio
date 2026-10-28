@@ -1,7 +1,7 @@
 ![](images/banner.png)
 
 ## Data portfolio
-- **Agentic marketing analytics demo on Databricks** [(view project)](rdatabricks-agentic-analytics): a tool-calling agent built with MLflow's `ResponsesAgent` and the OpenAI client, querying customer data through seven parameterised Unity Catalog SQL UDFs with whitelist injection guards; MLflow logging and evaluation
+- **Agentic marketing analytics demo on Databricks** [(view project)](databricks-agentic-analytics): a tool-calling agent built with MLflow's `ResponsesAgent` and the OpenAI client, querying customer data through seven parameterised Unity Catalog SQL UDFs with whitelist injection guards; MLflow logging and evaluation
 - **RAG pipeline demo** [(view project)](rag): a Streamlit RAG application for querying a section of the FCA Handbook, using LangChain, Hugging Face's all-MiniLM-L6-v2 embeddings, a FAISS vector store and OpenAI's gpt-oss-20b via Groq, DeepEval evaluation, MLflow model logging. [View and try chatbot app](https://fca-compliance-assistant.streamlit.app/)
 - **Marketing project** [(view project)](marketing): data cleaning and EDA, XGBoost profit maximisation model and SHAP analysis, RFM segmentation. [View Tableau interactive RFM dashboard](https://public.tableau.com/app/profile/data.granate/viz/MarketingRFMdashboard/Dashboard12)
 
